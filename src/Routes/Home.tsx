@@ -1,35 +1,31 @@
-import { useNavigate } from "react-router-dom"
-import { getAdminHello, logout } from "../api/Logger"
-import { getCookie } from "./Login"
+import { useState } from "react";
+import { LogDetails } from "../models/LogDetails";
+import { getLogActivityDetails } from "../api/Logger";
 
-async function handleHello(){
-    const response=await getAdminHello()
-    console.log(`resp: ${response}`)
+function Home() {
+  const [logData, setLogData] = useState<LogDetails[]>([]);
+
+  const fetchLogData = async function () {
+    const to = new Date();
+    const logDetails = await getLogActivityDetails(to);
+
+    console.log(logDetails.length);
+    if(logData.length>0){
+        setLogData(logDetails)
+    }
+  };
+
+  return (
+    <>
+      <button className="bg-red  rounded-lg" onClick={fetchLogData}>Fetch log details</button>
+      <div
+        className="w-[80%] h-auto mx-auto bg-indigo-200 mt-3"
+        id="logChart"
+      >
+        
+      </div>
+    </>
+  );
 }
 
-function handleCookie(){
-    const str=getCookie("auth_token")
-    console.log(`Cookie: ${str}`)
-}
-
-async function handleLogout(){
-    const response=await logout()
-    console.log(`logged out ${response}`)
-}
-function Home(){
-    const navigate=useNavigate()
-    return (
-        <>
-            <ul>
-                <li onClick={()=>{navigate("/login")}}>Login</li>
-                <li onClick={handleLogout}>Logout</li>
-                <li onClick={handleHello}>Admin Hello</li>
-                <li onClick={handleCookie}>Print Cookie</li>
-                <li>Get key input history</li>
-                <li>Home</li>
-            </ul>
-        </>
-    )
-}
-
-export default Home
+export default Home;

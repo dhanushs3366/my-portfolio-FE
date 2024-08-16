@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { GetAdminHello } from "../api/Logger";
 import { useNavigate } from "react-router-dom";
 
 export function getCookie(name: string): string | null {
@@ -14,8 +13,6 @@ export function getCookie(name: string): string | null {
 function Login() {
   const navigate=useNavigate()
   const [loginSuccess, setLoginSuccess] = useState<Boolean>(false);
-  GetAdminHello();
-
   async function login(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = document.querySelector("#login-form") as HTMLFormElement;

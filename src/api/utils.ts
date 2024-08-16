@@ -7,9 +7,8 @@ export const enum HTTPMethod{
     DELETE="DELETE"
 }
 
-type HTTPResponse=string
 
-export async function SendReqWithQuery(url:string,method:HTTPMethod,query? :any,schema?:any):Promise<HTTPResponse> {
+export async function SendReqWithQuery<T>(url:string,method:HTTPMethod,query? :any,schema?:any):Promise<T> {
     const requestBody:RequestInit={
         method:method,
         headers:{
@@ -32,6 +31,6 @@ export async function SendReqWithQuery(url:string,method:HTTPMethod,query? :any,
         const errText=await response.text()
         throw new Error(`error: ${errText}`)
     }
-    return response.json()
+    return response.json() as Promise<T>
 }
 
