@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { LogDetails } from "../models/LogDetails";
 import { getLogActivityDetails } from "../api/Logger";
+import LinePlot from "../components/charts/LinePlot";
 
 function Home() {
-  const [logData, setLogData] = useState<LogDetails[]>([]);
+  const [logData, setLogData] = useState([]);
 
   const fetchLogData = async function () {
     const to = new Date();
     const logDetails = await getLogActivityDetails(to);
+    const lineData=[]
+    logDetails.forEach((logDetail)=>{lineData.push(logDetail.all_keys)})
+    console.log(lineData);
 
-    console.log(logDetails.length);
     if(logData.length>0){
-        setLogData(logDetails)
+        setLogData(lineData)
     }
   };
 
@@ -22,7 +24,7 @@ function Home() {
         className="w-[80%] h-auto mx-auto bg-indigo-200 mt-3"
         id="logChart"
       >
-        
+        {logData && logData.length>0 ? <LinePlot data={logData} />:null}
       </div>
     </>
   );

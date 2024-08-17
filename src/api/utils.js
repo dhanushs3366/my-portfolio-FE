@@ -1,15 +1,13 @@
+export const HTTPMethod = Object.freeze({
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    PATCH: 'PATCH',
+    DELETE: 'DELETE'
+  });
 
-export const enum HTTPMethod{
-    GET="GET",
-    POST="POST",
-    PUT="PUT",
-    PATCH="PATCH",
-    DELETE="DELETE"
-}
-
-
-export async function SendReqWithQuery<T>(url:string,method:HTTPMethod,query? :any,schema?:any):Promise<T> {
-    const requestBody:RequestInit={
+export async function SendReqWithQuery(url,method,query,schema) {
+    const requestBody={
         method:method,
         headers:{
             "Content-Type":"application/json"
@@ -31,6 +29,6 @@ export async function SendReqWithQuery<T>(url:string,method:HTTPMethod,query? :a
         const errText=await response.text()
         throw new Error(`error: ${errText}`)
     }
-    return response.json() as Promise<T>
+    return response.json()
 }
 

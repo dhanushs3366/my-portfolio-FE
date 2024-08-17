@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function getCookie(name: string): string | null {
+export function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) {
@@ -12,15 +12,15 @@ export function getCookie(name: string): string | null {
 
 function Login() {
   const navigate=useNavigate()
-  const [loginSuccess, setLoginSuccess] = useState<Boolean>(false);
-  async function login(e: React.FormEvent<HTMLFormElement>) {
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  async function login(e) {
     e.preventDefault();
-    const form = document.querySelector("#login-form") as HTMLFormElement;
+    const form = document.querySelector("#login-form") 
     if (form) {
-      const username = (form.elements.namedItem("username") as HTMLInputElement)
+      const username = form.elements.namedItem("username")
         .value;
 
-      const password = (form.elements.namedItem("password") as HTMLInputElement)
+      const password = form.elements.namedItem("password") 
         .value;
 
       console.log("Username:", username);
