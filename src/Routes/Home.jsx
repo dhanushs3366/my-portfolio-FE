@@ -1,32 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getLogActivityDetails } from "../api/Logger";
-import LinePlot from "../components/charts/LinePlot";
+import Learning from "../components/charts/Learning";
 
 function Home() {
-  const [logData, setLogData] = useState([]);
+  const [logData, setLogData] = useState([{}]);
 
   const fetchLogData = async function () {
     const to = new Date();
     const logDetails = await getLogActivityDetails(to);
-    const lineData=[]
-    logDetails.forEach((logDetail)=>{lineData.push(logDetail.all_keys)})
-    console.log(lineData);
 
-    if(logData.length>0){
-        setLogData(lineData)
-    }
+    const logData = logDetails.map((logDetail) => {
+      return {
+        key: logDetail.all_keys,
+        created: logDetail.created_at,
+      };
+    });
+
+    setLogData(logData);
   };
+  useEffect(() => {
+    fetchLogData();
+  }, []);
 
   return (
-    <>
-      <button className="bg-red  rounded-lg" onClick={fetchLogData}>Fetch log details</button>
+    <div>
       <div
-        className="w-[80%] h-auto mx-auto bg-indigo-200 mt-3"
+        className="w-[80%] h-auto mx-auto bg-indigo-200 mt-3 flex items-center justify-center"
         id="logChart"
       >
-        {logData && logData.length>0 ? <LinePlot data={logData} />:null}
+        {logData.length> 0 ? (
+          <Learning data={logData} />
+        ) : null}
       </div>
-    </>
+    </div>
   );
 }
 

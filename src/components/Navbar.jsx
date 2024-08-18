@@ -21,7 +21,7 @@ function Navbar() {
   ];
 
   return (
-    <div className="w-[100%] bg-blue-400 h-[10vh] flex justify-evenly gap-x-2 gap-y-1 p-2">
+    <div className="w-[100%] bg-blue-400 h-[5vh] flex justify-evenly gap-x-2 gap-y-1 p-2">
       {navItems.map((item, index) => (
         <div key={index} className="w-auto h-auto  p-2">
           <p onClick={item.onClick} className="hover:cursor-pointer">{item.label}</p>
