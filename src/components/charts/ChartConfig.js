@@ -2,12 +2,14 @@ import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 import dayjs from 'dayjs';
 
 export function getChartConfig(type, dataset) {
-  const startOfDay = dayjs().startOf('day').format(); // Start of the day (00:00)
-  const now = dayjs().format(); // Current time
+  const startLabelAt=dayjs(dataset[0].updated_at).format()
+  const now = dayjs().format();
 
-  // Map the dataset to get labels (time) and data (keys)
-  const labels = dataset.map((item) => dayjs(item.created).format());
-  const data = dataset.map((item) => item.key);
+
+  const labels = dataset.map((item) => dayjs(item.created_at).format());
+  
+  
+  
 
   return {
     type: type,
@@ -15,11 +17,51 @@ export function getChartConfig(type, dataset) {
       labels: labels,
       datasets: [
         {
-          label: "Your Dataset",
-          data: data,
+          label: "All keys",
+          data: dataset.map((item) => item.all_keys),
           fill: false,
           borderColor: "rgba(75,192,192,1)",
-          tension: 0.1,
+          tension: 0,
+
+          // point radius
+          pointRadius:3,
+          pointHoverRadius:10,
+        },
+        {
+          label: "left clicks",
+          data: dataset.map((item)=> item.left_clicks),
+          fill:false,
+          borderColor: "red",
+          tension:0.1,
+          pointRadius:0,
+          pointHoverRadius:10,
+        },
+        {
+          label: "right clicks",
+          data: dataset.map((item)=> item.right_clicks),
+          fill:false,
+          borderColor: "blue",
+          tension:0.1,
+          pointRadius:0,
+          pointHoverRadius:10,
+        },
+        {
+          label: "Middle clicks",
+          data: dataset.map((item)=> item.middle_clicks),
+          fill:false,
+          borderColor: "green",
+          tension:0.1,
+          pointRadius:0,
+          pointHoverRadius:10,
+        },
+        {
+          label: "extra clicks",
+          data: dataset.map((item)=> item.extra_clicks),
+          fill:false,
+          borderColor: "orange",
+          tension:0.1,
+          pointRadius:0,
+          pointHoverRadius:10,
         },
       ],
     },
@@ -28,11 +70,14 @@ export function getChartConfig(type, dataset) {
           x: {
               type: 'time',
               time: {
-                  unit: 'minute',  // Adjust to 'hour' or 'day' as needed
+                  unit: 'hour',  
                   displayFormats: {
-                      minute: 'h:mm a', // Adjust format as needed
+                      minute: 'h A', 
                   }
               },
+              min:startLabelAt,
+              max:now,
+              stepSize:1,
               ticks: {
                   maxRotation: 45,
                   minRotation: 0,
