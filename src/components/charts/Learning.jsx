@@ -7,6 +7,7 @@ import { ChartTypes } from "./Types";
 
 function LogGraph() {
   const [logDetails, setLogDetails] = useState(null);
+  const [currentDay,setCurrentDay]=useState(0)
   const chartInstance = useRef(null); // Ref to store chart instance
 
   function getDayIndex(currentDate) {
@@ -30,14 +31,28 @@ function LogGraph() {
   async function fetchData() {
     const toDate = new Date();
     let logDetails = await getLogActivityDetails(toDate);
-    console.log(logDetails);
     logDetails.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
     logDetails = categoriseLogData(logDetails);
     if (logDetails) {
       setLogDetails(logDetails);
+      console.log(logDetails)
     }
   }
 
+  function goPreviousDay(){
+    let currDay=currentDay; // 0-6
+    currDay=(currDay-1)%7
+    if(currDay<0){
+      currDay+=7
+    }
+    setCurrentDay(currDay)
+  }
+
+  function goNextDay(){
+    let currDay=currentDay;
+    currDay=(currDay+1)%7;
+    setCurrentDay(currDay)
+  }
   function renderChart(dayIndex) {
     const chartCanvas = document.getElementById("log-details");
 
@@ -57,13 +72,15 @@ function LogGraph() {
 
   useEffect(() => {
     if (logDetails) {
-      renderChart(0);
+      renderChart(currentDay);
     }
-  }, [logDetails]);
+  }, [logDetails,currentDay]);
 
-  return (
-    <div className="w-full h-full">
-      <canvas id="log-details" className=""></canvas>
+  return ( 
+    <div className="w-full h-full relative flex flex-row gap-4 justify-center align-middle">
+      <button className="rounded-full size-5 relative text-lg my-auto hover:shadow-xl" onClick={goPreviousDay}>&lt;</button>
+      <canvas id="log-details" className="border-2 border-black top-[50%]"></canvas>
+      <button className="rounded-full size-5 text-lg relative my-auto" onClick={goNextDay}>&gt;</button>
     </div>
   );
 }
