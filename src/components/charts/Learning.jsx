@@ -77,7 +77,7 @@ function LogGraph() {
   }, [logDetails,currentDay]);
 
   return ( 
-    <div className="w-full h-full relative flex flex-row gap-4 justify-center align-middle">
+    <div className="w-full h-full relative flex flex-row gap-4 justify-center align-middle mt-3">
       <button className="rounded-full size-5 relative text-lg my-auto hover:shadow-xl" onClick={goPreviousDay}>&lt;</button>
       <canvas id="log-details" className="border-2 border-black top-[50%]"></canvas>
       <button className="rounded-full size-5 text-lg relative my-auto" onClick={goNextDay}>&gt;</button>
